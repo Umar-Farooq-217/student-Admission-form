@@ -3,4 +3,14 @@
 @tailwind utilities;
 
 
+.back {
+  background-image: url('./../public/bg.jpg');
+  min-height: 100vh;
+}
 
+.text-gradient {
+  background: linear-gradient(to right, #4f46e5, #e11d48);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
