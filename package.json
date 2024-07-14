@@ -9,9 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.4"
+    "flowbite-react": "^0.10.1",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
   },
   "devDependencies": {
     "postcss": "^8",
