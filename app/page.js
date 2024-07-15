@@ -1,25 +1,58 @@
 'use client'
+import { useState } from 'react';
 import './globals.css'
 
 export default function Home() {
+  const [name,setName]=useState('')
+  const [phone,setPhone]=useState('')
+  const [email,setEmail]=useState('')
+  const [students,setStudents]=useState([])
+
+  const submitHandler = (e)=>{
+    if (!name || ! email || !phone) {
+      alert('Fill all fields')
+      return
+      
+    }
+    e.preventDefault();
+  const newStudent = {
+      name,
+      email,
+      phone
+    }
+    setStudents([...students,newStudent])
+    setName('')
+    setEmail('')
+    setPhone('')
+  }
+
+  const updateHandler = (email)=>{
+
+  }
+
+  const deleteHandler=(email)=>{
+const remainStudents = students.filter(student =>student.email != email)
+setStudents(remainStudents)
+
+  }
   
   return (
    <div>
     <div className='back bg-cover w-full '>
     <h1 className='text-5xl text-gradient  font-sans font-bold text-center'>Student Admission Form</h1>
 
-    <div className="mx-64">
-    <form >
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+    <div className="lg:mx-64 md:mx-40 sm:mx-10">
+    <form onSubmit={submitHandler}>
+        <div className="mb-4 sm:mx-10">
+          <label className="block text-gray-700 text-sm font-bold mb-2"  htmlFor="name">
             Name
           </label>
           <input
             type="text"
             id="name"
             name="name"
-           
-          
+            onChange={(e)=>setName(e.target.value)}
+          value={name}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
@@ -32,7 +65,8 @@ export default function Home() {
             type="email"
             id="email"
             name="email"
-           
+            onChange={(e)=>setEmail(e.target.value)}
+            value={email}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
@@ -45,7 +79,8 @@ export default function Home() {
             type="tel"
             id="phone"
             name="phone"
-         
+            onChange={(e)=>setPhone(e.target.value)}
+            value={phone}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
@@ -56,6 +91,7 @@ export default function Home() {
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={submitHandler}
           >
             Submit
           </button>
@@ -64,6 +100,21 @@ export default function Home() {
         
     
       
+    </div>
+    <div className="grid grid-cols-auto-fit gap-2 mx-4 pt-10">
+    {students.map((student, i) => (
+            <div key={i} className=" bg-white rounded-xl shadow-xl pl-5 py-10">
+                  <h1 className="font-bold text-2xl">#{i + 1}</h1>
+              <h1 className=""><span className="font-bold text-xl">Name : </span>{student.name}</h1>
+              <h1 className=""><span className="font-bold text-xl">Email : </span>{student.email}</h1>
+              <h1 className=""><span className="font-bold text-xl">Phone : </span>{student.phone}</h1>
+              <div className="">
+                <button className="bg-green-600 rounded-xl hover:text-white font-bold mt-5 py-2 px-5" onClick={updateHandler}>Update</button>
+                <button className="bg-red-600 rounded-xl hover:text-white font-bold mt-5 py-2 ml-2 px-5" 
+                onClick={()=>deleteHandler(student.email)}>Delete</button>
+              </div>
+            </div>
+          ))}
     </div>
 
     </div>

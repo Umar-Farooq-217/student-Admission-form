@@ -7,6 +7,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens:{
+         'sm':'3340px',
+         'md':'770px',
+         'lg':'1024px'
+      },
+      gridTemplateColumns: {
+        'auto-fit': 'repeat(auto-fit, minmax(330px, 1fr))',
+        'auto-fill': 'repeat(auto-fill, minmax(250px, 1fr))',
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
