@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react';
 import '../globals.css';
-import { ref, set, remove } from 'firebase/database';
 import { db } from '@/config/firebase';
+import { collection,  addDoc } from 'firebase/firestore';
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -11,7 +11,8 @@ export default function Home() {
   const [students, setStudents] = useState([]);
   const [isUpdatingStudent, setIsUpdatingStudent] = useState(false);
   const [currentEmail, setCurrentEmail] = useState('');
-
+  
+  
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!name || !email || !phone) {
@@ -25,23 +26,24 @@ export default function Home() {
       phone,
     };
 
-    if (isUpdatingStudent) {
-      const updatedStudents = students.map((student) =>
-        student.email === currentEmail ? newStudent : student
-      );
-      setStudents(updatedStudents);
-      setIsUpdatingStudent(false);
-      setCurrentEmail('');
-    } else {
-      setStudents([...students, newStudent]);
-    }
-
     try {
-      const studentRef = ref(db, 'students/'); // Using email as key, replacing dots to avoid Firebase path issues
-      await set(studentRef, newStudent);
-      alert('success')
+      const studentDoc = collection(db, 'students');
+      await addDoc(studentDoc, newStudent);
+      
+      if (isUpdatingStudent) {
+        const updatedStudents = students.map((student) =>
+          student.email === currentEmail ? newStudent : student
+        );
+        setStudents(updatedStudents);
+        setIsUpdatingStudent(false);
+        setCurrentEmail('');
+      } else {
+        setStudents([...students, newStudent]);
+      }
+
+      alert('Success');
     } catch (error) {
-      console.log('Error in firebase ', error);
+      console.log('Error in Firestore: ', error);
     }
 
     setName('');
@@ -62,12 +64,7 @@ export default function Home() {
     const remainStudents = students.filter((student) => student.email !== email);
     setStudents(remainStudents);
 
-    try {
-      const studentRef = ref(db, 'students/' + email.replace('.', '_'));
-      await remove(studentRef);
-    } catch (error) {
-      console.log('Error in firebase ', error);
-    }
+    
   };
 
   return (
