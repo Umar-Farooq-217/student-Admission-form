@@ -25,23 +25,24 @@ export default function Home() {
       email,
       phone,
     };
+    if (isUpdatingStudent) {
+      const updatedStudents = students.map((student) =>
+        student.email === currentEmail ? newStudent : student
+      );
+      setStudents(updatedStudents);
+      setIsUpdatingStudent(false);
+      setCurrentEmail('');
+    } else {
+      setStudents([...students, newStudent]);
+    }
 
     try {
       const studentDoc = collection(db, 'students');
       await addDoc(studentDoc, newStudent);
       
-      if (isUpdatingStudent) {
-        const updatedStudents = students.map((student) =>
-          student.email === currentEmail ? newStudent : student
-        );
-        setStudents(updatedStudents);
-        setIsUpdatingStudent(false);
-        setCurrentEmail('');
-      } else {
-        setStudents([...students, newStudent]);
-      }
+  
 
-      alert('Success');
+    
     } catch (error) {
       console.log('Error in Firestore: ', error);
     }
@@ -60,12 +61,13 @@ export default function Home() {
   };
 
   const deleteHandler = async (email) => {
-    console.log('Deleting student with email:', email);
+    
     const remainStudents = students.filter((student) => student.email !== email);
     setStudents(remainStudents);
 
     
   };
+  
 
   return (
     <div>
@@ -76,12 +78,12 @@ export default function Home() {
 
         <div className="lg:mx-64 md:mx-40 sm:mx-10">
           <form onSubmit={submitHandler}>
-            <div className="mb-4 sm:mx-10">
+          <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="name"
+                htmlFor="email"
               >
-                Name
+                Email
               </label>
               <input
                 type="text"
@@ -93,6 +95,7 @@ export default function Home() {
                 required
               />
             </div>
+           
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
