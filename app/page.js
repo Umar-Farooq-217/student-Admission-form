@@ -62,10 +62,10 @@ export default function Home() {
 
         <div className="lg:mx-64 md:mx-40 sm:mx-10">
           <form onSubmit={submitHandler}>
-            <div className="mb-4 sm:mx-10">
+          <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="name"
+                htmlFor="email"
               >
                 Name
               </label>

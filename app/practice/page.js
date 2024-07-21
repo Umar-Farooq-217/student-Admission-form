@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import '../globals.css';
 import { db } from '@/config/firebase';
-import { collection,  addDoc } from 'firebase/firestore';
+import { collection,  addDoc, getDocs } from 'firebase/firestore';
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -11,6 +11,7 @@ export default function Home() {
   const [students, setStudents] = useState([]);
   const [isUpdatingStudent, setIsUpdatingStudent] = useState(false);
   const [currentEmail, setCurrentEmail] = useState('');
+
   
   
   const submitHandler = async (e) => {
@@ -67,6 +68,20 @@ export default function Home() {
 
     
   };
+
+  const fetchData = async()=>{
+   
+    try {
+      const collectionRef = collection(db,'students')
+    const fetchDocs = await getDocs(collectionRef)
+    const sudentsData = fetchDocs.map(doc => doc.data())
+    console.log('students ',sudentsData);
+    } catch (error) {
+console.log('error',error);
+    }
+  }
+
+
   
 
   return (
@@ -83,7 +98,7 @@ export default function Home() {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="email"
               >
-                Email
+                Name
               </label>
               <input
                 type="text"
@@ -138,8 +153,10 @@ export default function Home() {
               >
                 {isUpdatingStudent ? 'Update' : 'Submit'}
               </button>
+            
             </div>
           </form>
+          <button onClick={fetchData} className="bg-yellow-400 rounded-lg py-3 px-4 font-bold text-white ">See Students</button>
         </div>
 
         <div className="grid grid-cols-auto-fit gap-2 mx-4 pt-10">
