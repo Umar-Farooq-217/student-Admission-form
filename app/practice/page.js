@@ -156,7 +156,6 @@ console.log('error',error);
             
             </div>
           </form>
-          <button onClick={fetchData} className="bg-yellow-400 rounded-lg py-3 px-4 font-bold text-white ">See Students</button>
         </div>
 
         <div className="grid grid-cols-auto-fit gap-2 mx-4 pt-10">
